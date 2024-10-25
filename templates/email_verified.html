@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %}Email Verified{% endblock %}
+{% block content %}
+<h1>Email Verified Successfully</h1>
+<p>Your email has been verified. You will be redirected to the login page in <span id="countdown">5</span> seconds.</p>
+<p>If you are not redirected automatically, <a href="{{ url_for('login') }}">click here</a>.</p>
+
+<script>
+var seconds = 5;
+var countdownElement = document.getElementById('countdown');
+
+var interval = setInterval(function() {
+    seconds--;
+    countdownElement.textContent = seconds;
+    if (seconds <= 0) {
+        clearInterval(interval);
+        window.location.href = "{{ url_for('login') }}";
+    }
+}, 1000);
+</script>
+{% endblock %}

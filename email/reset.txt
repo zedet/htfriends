@@ -1,0 +1,14 @@
+Subject: Reset Your Password
+
+Dear User,
+
+We received a request to reset your password for your account associated with this email address.
+
+Please click the link below to reset your password:
+
+{{ reset_link }}
+
+If you did not request a password reset, please ignore this email or contact support if you have questions.
+
+Best regards,
+Your App Team

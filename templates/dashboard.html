@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<h1>Welcome, {{ manager_name }}!</h1>
+
+{% if hattrick_connected %}
+    <p>Your Hattrick account is connected.</p>
+
+    <h2>Your Supporter Tier:</h2>
+    <p>{{ supporter_tier }}</p>
+
+    <h2>Your Teams:</h2>
+    {% if teams %}
+        <ul>
+            {% for team in teams %}
+                <li>{{ team.team_name }} (ID: {{ team.team_id }})</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No teams found.</p>
+    {% endif %}
+
+    <h2>Your Friends:</h2>
+    {% if friends %}
+        <ul>
+            {% for friend in friends %}
+                <li>{{ friend }}
+                    <form method="POST" action="{{ url_for('remove_friend') }}" style="display:inline;">
+                        <input type="hidden" name="friend_email" value="{{ friend }}">
+                        <button type="submit">Remove Friend</button>
+                    </form>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>You have no friends added.</p>
+    {% endif %}
+
+    <h3>Add a Friend:</h3>
+    <form method="POST" action="{{ url_for('add_friend') }}">
+        <input type="email" name="friend_email" placeholder="Friend's Email" required>
+        <button type="submit">Add Friend</button>
+    </form>
+
+    <h3>Friend Requests:</h3>
+    {% if friend_requests %}
+        <ul>
+            {% for request in friend_requests %}
+                <li>
+                    {{ request }}
+                    <form method="POST" action="{{ url_for('accept_friend') }}" style="display:inline;">
+                        <input type="hidden" name="friend_email" value="{{ request }}">
+                        <button type="submit">Accept</button>
+                    </form>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No friend requests.</p>
+    {% endif %}
+
+    <h2>Your Groups:</h2>
+    {% if groups %}
+        <ul>
+            {% for group in groups %}
+                <li>{{ group.group_name }}
+                    <ul>
+                        {% for member in group.members %}
+                            <li>{{ member }}</li>
+                        {% endfor %}
+                    </ul>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>You have no groups.</p>
+    {% endif %}
+
+    <h3>Create a Group:</h3>
+    <form method="POST" action="{{ url_for('create_group') }}">
+        <input type="text" name="group_name" placeholder="Group Name" required><br><br>
+        <p>Select Friends to Add:</p>
+        {% if friends %}
+            {% for friend in friends %}
+                <input type="checkbox" name="member_emails" value="{{ friend }}"> {{ friend }}<br>
+            {% endfor %}
+        {% else %}
+            <p>You have no friends to add.</p>
+        {% endif %}
+        <button type="submit">Create Group</button>
+    </form>
+
+    <!-- Optionally, add a Refresh Data button if you want to provide manual refresh -->
+    <!--
+    <form method="GET" action="{{ url_for('dashboard') }}">
+        <button type="submit">Refresh Data</button>
+    </form>
+    -->
+
+{% else %}
+    <p>Your Hattrick account is not connected.</p>
+    <a href="{{ url_for('connect_hattrick') }}">Connect Hattrick Account</a>
+{% endif %}
+
+<br><br>
+<a href="{{ url_for('logout') }}">Logout</a>
+{% endblock %}

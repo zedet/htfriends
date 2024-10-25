@@ -1,0 +1,13 @@
+def add_friend(user_id, friend_id):
+    friends_ref = db.collection('users').document(user_id).collection('friends')
+    friends_ref.document(friend_id).set({'status': 'pending'})
+
+def accept_friend(user_id, friend_id):
+    friends_ref = db.collection('users').document(user_id).collection('friends')
+    friends_ref.document(friend_id).update({'status': 'accepted'})
+
+def get_friends(user_id):
+    friends_ref = db.collection('users').document(user_id).collection('friends')
+    friends = friends_ref.where('status', '==', 'accepted').stream()
+    friend_list = [friend.id for friend in friends]
+    return friend_list

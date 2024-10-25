@@ -1,0 +1,6 @@
+{% extends 'base.html' %}
+{% block title %}Welcome to Hattrick App{% endblock %}
+{% block content %}
+<h1>Welcome to Hattrick App</h1>
+<p>Please <a href="{{ url_for('signup') }}">Sign Up</a> or <a href="{{ url_for('login') }}">Log In</a>.</p>
+{% endblock %}
